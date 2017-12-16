@@ -16,8 +16,10 @@
 package com.github.koshamo.fiddler;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 
 /**
  * @author jochen
@@ -46,40 +48,79 @@ public class MessageBus {
 		}
 	}
 	
-	private List<RegisteredHandler> eventHandlers;
-	private List<RegisteredHandler> messageHandlers;
-	private List<RegisteredHandler> requestHandlers;
-	private List<RegisteredHandler> dataHandlers;
+	private final class EventRunner implements Runnable {
+
+		boolean run = true;
+		EventRunner() {
+			// empty C'tor
+		}
+		
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
+		@Override
+		public void run() {
+			while (run) {
+				if (!eventQueue.isEmpty()) {
+					Event ev = eventQueue.poll();
+					handleEvent(ev, eventHandlers);
+					if (ev instanceof MessageEvent)
+						handleEvent(ev, messageHandlers);
+//					if (ev instanceof RequestEvent)
+//						handleEvent(ev, requestHandlers);
+//					if (ev instanceof DataEvent)
+//						handleEvent(ev, dataHandlers);
+
+				} else {
+					try {
+						Thread.sleep(5);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		
+		private void handleEvent(Event ev, List<RegisteredHandler> list) {
+			for (RegisteredHandler rh : list) {
+				if (rh.getType() == ListenerType.ANY)
+					rh.getHandler().handle(ev);
+				if (rh.getType() == ListenerType.TARGET &&
+						(ev.getTarget() == rh.getHandler()
+						|| ev.getTarget() == null))
+					rh.getHandler().handle(ev);
+			}
+		}
+
+		void stopRunner() {
+			run = false;
+		}
+	}
+	
+	List<RegisteredHandler> eventHandlers;
+	List<RegisteredHandler> messageHandlers;
+	List<RegisteredHandler> requestHandlers;
+	List<RegisteredHandler> dataHandlers;
+	Queue<Event> eventQueue;
+	private EventRunner runner;
 	
 	public MessageBus() {
 		eventHandlers = new ArrayList<>();
 		messageHandlers = new ArrayList<>();
 		requestHandlers = new ArrayList<>();
 		dataHandlers = new ArrayList<>();
+		eventQueue = new LinkedList<>();
+		runner = new EventRunner();
+		new Thread(runner).start();
 	}
 	
-	public void postEvent(Event ev) {
+	public boolean postEvent(Event ev) {
 		if (ev == null)
-			return;
-		handleEvent(ev, eventHandlers);
-		if (ev instanceof MessageEvent)
-			handleEvent(ev, messageHandlers);
-//		if (ev instanceof RequestEvent)
-//			handleEvent(ev, requestHandlers);
-//		if (ev instanceof DataEvent)
-//			handleEvent(ev, dataHandlers);
+			return false;
+		return eventQueue.offer(ev);
 	}
 	
-	private static void handleEvent(Event ev, List<RegisteredHandler> list) {
-		for (RegisteredHandler rh : list) {
-			if (rh.getType() == ListenerType.ANY)
-				rh.getHandler().handle(ev);
-			if (rh.getType() == ListenerType.TARGET &&
-					(ev.getTarget() == rh.getHandler()
-					|| ev.getTarget() == null))
-				rh.getHandler().handle(ev);
-		}
-	}
 	
 	public void registerAllEvents(EventHandler handler, ListenerType type) {
 		Objects.requireNonNull(handler, "You must register a non-null EventHandler");
