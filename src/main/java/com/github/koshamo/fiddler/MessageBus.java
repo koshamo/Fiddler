@@ -63,13 +63,17 @@ public class MessageBus {
 			while (run) {
 				if (!eventQueue.isEmpty()) {
 					Event ev = eventQueue.poll();
-					handleEvent(ev, eventHandlers);
-					if (ev instanceof MessageEvent)
-						handleEvent(ev, messageHandlers);
-//					if (ev instanceof RequestEvent)
-//						handleEvent(ev, requestHandlers);
-//					if (ev instanceof DataEvent)
-//						handleEvent(ev, dataHandlers);
+					// why does poll return a null element?
+					// we checked the queue, if any item is there
+					if (ev != null) {
+						handleEvent(ev, eventHandlers);
+						if (ev instanceof MessageEvent)
+							handleEvent(ev, messageHandlers);
+						if (ev instanceof RequestEvent)
+							handleEvent(ev, requestHandlers);
+						if (ev instanceof DataEvent)
+							handleEvent(ev, dataHandlers);
+					}
 
 				} else {
 					try {
@@ -87,8 +91,8 @@ public class MessageBus {
 				if (rh.getType() == ListenerType.ANY)
 					rh.getHandler().handle(ev);
 				if (rh.getType() == ListenerType.TARGET &&
-						(ev.getTarget() == rh.getHandler()
-						|| ev.getTarget() == null))
+						(ev.getTarget() == null
+						|| ev.getTarget() == rh.getHandler()))
 					rh.getHandler().handle(ev);
 			}
 		}
