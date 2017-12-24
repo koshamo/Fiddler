@@ -15,6 +15,8 @@
  */
 package com.github.koshamo.fiddler;
 
+import java.util.Objects;
+
 /**
  * @author jochen
  *
@@ -24,6 +26,7 @@ public abstract class Event {
 	private final EventHandler target;
 
 	public Event(EventHandler source, EventHandler target) {
+		Objects.requireNonNull(source, "You must specify a EventHandler source");
 		this.source = source;
 		this.target = target;
 	}

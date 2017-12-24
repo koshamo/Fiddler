@@ -128,6 +128,7 @@ public class MessageBus {
 	
 	public void registerAllEvents(EventHandler handler, ListenerType type) {
 		Objects.requireNonNull(handler, "You must register a non-null EventHandler");
+		Objects.requireNonNull(type, "You must specify a ListenerType");
 		eventHandlers.add(new RegisteredHandler(handler, type));
 	}
 	
@@ -138,6 +139,7 @@ public class MessageBus {
 
 	public void registerMessageEvents(EventHandler handler, ListenerType type) {
 		Objects.requireNonNull(handler, "You must register a non-null EventHandler");
+		Objects.requireNonNull(type, "You must specify a ListenerType");
 		messageHandlers.add(new RegisteredHandler(handler, type));
 	}
 	
@@ -148,6 +150,7 @@ public class MessageBus {
 
 	public void registerRequestEvents(EventHandler handler, ListenerType type) {
 		Objects.requireNonNull(handler, "You must register a non-null EventHandler");
+		Objects.requireNonNull(type, "You must specify a ListenerType");
 		requestHandlers.add(new RegisteredHandler(handler, type));
 	}
 	
@@ -158,6 +161,7 @@ public class MessageBus {
 
 	public void registerDataEvents(EventHandler handler, ListenerType type) {
 		Objects.requireNonNull(handler, "You must register a non-null EventHandler");
+		Objects.requireNonNull(type, "You must specify a ListenerType");
 		dataHandlers.add(new RegisteredHandler(handler, type));
 	}
 	
