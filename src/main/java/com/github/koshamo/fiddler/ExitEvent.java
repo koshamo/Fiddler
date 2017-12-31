@@ -19,7 +19,15 @@ package com.github.koshamo.fiddler;
  * @author jochen
  *
  */
-public interface EventHandler{
-	void handle(Event event);
-	void shutdown();
+public class ExitEvent extends Event {
+
+	/**
+	 * @param source
+	 * @param target
+	 */
+	public ExitEvent(EventHandler source, EventHandler target) {
+		super(source, target);
+		// TODO Auto-generated constructor stub
+	}
+
 }

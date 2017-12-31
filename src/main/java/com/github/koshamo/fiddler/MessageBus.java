@@ -20,6 +20,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author jochen
@@ -66,6 +68,10 @@ public class MessageBus {
 					// why does poll return a null element?
 					// we checked the queue, if any item is there
 					if (ev != null) {
+						if (ev instanceof ExitEvent) {
+							shutdown();
+							continue;
+						}
 						handleEvent(ev, eventHandlers);
 						if (ev instanceof MessageEvent)
 							handleEvent(ev, messageHandlers);
@@ -97,6 +103,16 @@ public class MessageBus {
 			}
 		}
 
+		private void shutdown() {
+			Set<RegisteredHandler> modules = new TreeSet<>();
+			// collect all registered handlers without duplicates (=> Set)
+			eventHandlers.stream().filter(e -> e != null).forEach(modules::add);
+			messageHandlers.stream().filter(e -> e != null).forEach(modules::add);
+			requestHandlers.stream().filter(e -> e != null).forEach(modules::add);
+			dataHandlers.stream().filter(e -> e != null).forEach(modules::add);
+			modules.stream().forEach(e -> e.getHandler().shutdown());
+		}
+		
 		void stopRunner() {
 			run = false;
 		}
