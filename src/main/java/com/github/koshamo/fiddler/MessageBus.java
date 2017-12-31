@@ -53,6 +53,7 @@ public class MessageBus {
 	private final class EventRunner implements Runnable {
 
 		boolean run = true;
+		boolean exitSignal = false;
 		EventRunner() {
 			// empty C'tor
 		}
@@ -70,6 +71,7 @@ public class MessageBus {
 					if (ev != null) {
 						if (ev instanceof ExitEvent) {
 							shutdown();
+							exitSignal = true;
 							continue;
 						}
 						handleEvent(ev, eventHandlers);
@@ -88,6 +90,13 @@ public class MessageBus {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+				}
+				if (exitSignal) {
+					if (eventHandlers.isEmpty() 
+							&& messageHandlers.isEmpty() 
+							&& requestHandlers.isEmpty() 
+							&& dataHandlers.isEmpty())
+						stopRunner();
 				}
 			}
 		}
