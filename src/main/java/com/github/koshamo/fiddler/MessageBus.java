@@ -15,6 +15,7 @@
  */
 package com.github.koshamo.fiddler;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
@@ -126,7 +127,9 @@ public class MessageBus {
 		}
 
 		private void shutdown() {
-			Set<RegisteredHandler> modules = new TreeSet<>();
+			Comparator<RegisteredHandler> comparator = 
+					Comparator.comparingInt(RegisteredHandler::hashCode);
+			Set<RegisteredHandler> modules = new TreeSet<>(comparator);
 			// collect all registered handlers without duplicates (=> Set)
 			eventHandlers.stream().filter(e -> e != null).forEach(modules::add);
 			messageHandlers.stream().filter(e -> e != null).forEach(modules::add);
