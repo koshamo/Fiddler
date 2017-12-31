@@ -15,13 +15,13 @@
  */
 package com.github.koshamo.fiddler;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @author jochen
@@ -66,6 +66,7 @@ public class MessageBus {
 			while (run) {
 				if (!eventQueue.isEmpty()) {
 					Event ev = eventQueue.poll();
+					deleteNulls();
 					// why does poll return a null element?
 					// we checked the queue, if any item is there
 					if (ev != null) {
@@ -99,6 +100,18 @@ public class MessageBus {
 						stopRunner();
 				}
 			}
+		}
+		
+		private void deleteNulls() {
+			deleteNulls(eventHandlers);
+			deleteNulls(messageHandlers);
+			deleteNulls(requestHandlers);
+			deleteNulls(dataHandlers);
+		}
+		
+		private void deleteNulls(List<RegisteredHandler> list) {
+			while (list.contains(null)) 
+				list.remove(list.indexOf(null));
 		}
 		
 		private void handleEvent(Event ev, List<RegisteredHandler> list) {
@@ -135,11 +148,11 @@ public class MessageBus {
 	private EventRunner runner;
 	
 	public MessageBus() {
-		eventHandlers = new ArrayList<>();
-		messageHandlers = new ArrayList<>();
-		requestHandlers = new ArrayList<>();
-		dataHandlers = new ArrayList<>();
-		eventQueue = new LinkedList<>();
+		eventHandlers = new Vector<>();
+		messageHandlers = new Vector<>();
+		requestHandlers = new Vector<>();
+		dataHandlers = new Vector<>();
+		eventQueue = new ConcurrentLinkedQueue<>();
 		runner = new EventRunner();
 		new Thread(runner).start();
 	}
