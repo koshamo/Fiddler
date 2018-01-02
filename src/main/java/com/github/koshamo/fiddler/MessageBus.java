@@ -66,8 +66,8 @@ public class MessageBus {
 		public void run() {
 			while (run) {
 				if (!eventQueue.isEmpty()) {
-					Event ev = eventQueue.poll();
 					deleteNulls();
+					Event ev = eventQueue.poll();
 					// why does poll return a null element?
 					// we checked the queue, if any item is there
 					if (ev != null) {
@@ -84,7 +84,6 @@ public class MessageBus {
 						if (ev instanceof DataEvent)
 							handleEvent(ev, dataHandlers);
 					}
-
 				} else {
 					try {
 						Thread.sleep(5);
@@ -93,6 +92,7 @@ public class MessageBus {
 						e.printStackTrace();
 					}
 				}
+				removeUnregisteredHandlers();
 				if (exitSignal) {
 					if (eventHandlers.isEmpty() 
 							&& messageHandlers.isEmpty() 
@@ -101,6 +101,18 @@ public class MessageBus {
 						stopRunner();
 				}
 			}
+			System.exit(0);
+		}
+		
+		private void removeUnregisteredHandlers() {
+			eventHandlers.removeAll(eventHandlersToBeRemoved);
+			eventHandlersToBeRemoved.clear();
+			messageHandlers.removeAll(messageHandlersToBeRemoved);
+			messageHandlersToBeRemoved.clear();
+			requestHandlers.removeAll(requestHandlersToBeRemoved);
+			requestHandlersToBeRemoved.clear();
+			dataHandlers.removeAll(dataHandlersToBeRemoved);
+			dataHandlersToBeRemoved.clear();
 		}
 		
 		private void deleteNulls() {
@@ -127,15 +139,10 @@ public class MessageBus {
 		}
 
 		private void shutdown() {
-			Comparator<RegisteredHandler> comparator = 
-					Comparator.comparingInt(RegisteredHandler::hashCode);
-			Set<RegisteredHandler> modules = new TreeSet<>(comparator);
-			// collect all registered handlers without duplicates (=> Set)
-			eventHandlers.stream().filter(e -> e != null).forEach(modules::add);
-			messageHandlers.stream().filter(e -> e != null).forEach(modules::add);
-			requestHandlers.stream().filter(e -> e != null).forEach(modules::add);
-			dataHandlers.stream().filter(e -> e != null).forEach(modules::add);
-			modules.stream().forEach(e -> e.getHandler().shutdown());
+			eventHandlers.stream().forEach(e -> e.getHandler().shutdown());
+			messageHandlers.stream().forEach(e -> e.getHandler().shutdown());
+			requestHandlers.stream().forEach(e -> e.getHandler().shutdown());
+			dataHandlers.stream().forEach(e -> e.getHandler().shutdown());
 		}
 		
 		void stopRunner() {
@@ -147,6 +154,10 @@ public class MessageBus {
 	List<RegisteredHandler> messageHandlers;
 	List<RegisteredHandler> requestHandlers;
 	List<RegisteredHandler> dataHandlers;
+	List<RegisteredHandler> eventHandlersToBeRemoved;
+	List<RegisteredHandler> messageHandlersToBeRemoved;
+	List<RegisteredHandler> requestHandlersToBeRemoved;
+	List<RegisteredHandler> dataHandlersToBeRemoved;
 	Queue<Event> eventQueue;
 	private EventRunner runner;
 	
@@ -155,6 +166,10 @@ public class MessageBus {
 		messageHandlers = new Vector<>();
 		requestHandlers = new Vector<>();
 		dataHandlers = new Vector<>();
+		eventHandlersToBeRemoved = new Vector<>();
+		messageHandlersToBeRemoved = new Vector<>();
+		requestHandlersToBeRemoved = new Vector<>();
+		dataHandlersToBeRemoved = new Vector<>();
 		eventQueue = new ConcurrentLinkedQueue<>();
 		runner = new EventRunner();
 		new Thread(runner).start();
@@ -175,7 +190,7 @@ public class MessageBus {
 	
 	public void unregisterAllEvents(EventHandler handler) {
 		if (handler != null) 
-			unregisterEvents(handler, eventHandlers);
+			unregisterEvents(handler, eventHandlers, eventHandlersToBeRemoved);
 	}
 
 	public void registerMessageEvents(EventHandler handler, ListenerType type) {
@@ -186,7 +201,7 @@ public class MessageBus {
 	
 	public void unregisterMessageEvents(EventHandler handler) {
 		if (handler != null) 
-			unregisterEvents(handler, messageHandlers);
+			unregisterEvents(handler, messageHandlers, messageHandlersToBeRemoved);
 	}
 
 	public void registerRequestEvents(EventHandler handler, ListenerType type) {
@@ -197,7 +212,7 @@ public class MessageBus {
 	
 	public void unregisterRequestEvents(EventHandler handler) {
 		if (handler != null) 
-			unregisterEvents(handler, requestHandlers);
+			unregisterEvents(handler, requestHandlers, requestHandlersToBeRemoved);
 	}
 
 	public void registerDataEvents(EventHandler handler, ListenerType type) {
@@ -208,13 +223,17 @@ public class MessageBus {
 	
 	public void unregisterDataEvents(EventHandler handler) {
 		if (handler != null) 
-			unregisterEvents(handler, dataHandlers);
+			unregisterEvents(handler, dataHandlers, dataHandlersToBeRemoved);
 	}
 
-	private static void unregisterEvents(EventHandler handler, List<RegisteredHandler> list) {
-		list.parallelStream()
+	private static void unregisterEvents(EventHandler handler, 
+			List<RegisteredHandler> list, List<RegisteredHandler> listToBeRemoved) {
+//		list.parallelStream()
+//		.filter(rh -> rh.getHandler() == handler)
+//		.forEach(list::remove);
+		list.stream()
 		.filter(rh -> rh.getHandler() == handler)
-		.forEach(list::remove);
-		
+		.forEach(listToBeRemoved::add);
 	}
+	
 } 
