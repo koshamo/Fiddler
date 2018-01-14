@@ -19,7 +19,7 @@ package com.github.koshamo.fiddler;
  * @author jochen
  *
  */
-public class MessageEvent extends Event {
+public abstract class MessageEvent extends Event {
 	
 	private final String message;
 	

@@ -19,7 +19,7 @@ package com.github.koshamo.fiddler;
  * @author jochen
  *
  */
-public class DataEvent<M, T> extends Event {
+public abstract class DataEvent<M, T> extends Event {
 
 	private final M meta;
 	private final T data;
@@ -36,13 +36,5 @@ public class DataEvent<M, T> extends Event {
 	
 	public T getData() {
 		return data;
-	}
-	
-	public Class<?> getMetaType() {
-		return meta.getClass();
-	}
-	
-	public Class<?> getDataType() {
-		return data.getClass();
 	}
 }

@@ -19,7 +19,7 @@ package com.github.koshamo.fiddler;
  * @author jochen
  *
  */
-public class RequestEvent<M> extends Event {
+public abstract class RequestEvent<M> extends Event {
 
 	private final M meta;
 	
@@ -32,8 +32,4 @@ public class RequestEvent<M> extends Event {
 		return meta;
 	}
 	
-	public Class<?> getMetaType() {
-		return meta.getClass();
-	}
-
 }
