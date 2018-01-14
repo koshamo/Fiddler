@@ -15,6 +15,8 @@
  */
 package com.github.koshamo.fiddler.jfx;
 
+import javafx.application.Application;
+
 /**
  * @author jochen
  *
@@ -34,7 +36,7 @@ public class FiddlerFxAppRunner implements Runnable {
 	 */
 	@Override
 	public void run() {
-		FiddlerFxApp.launch(fiddlerFxApp, args);
+		Application.launch(fiddlerFxApp, args);
 	}
 
 }

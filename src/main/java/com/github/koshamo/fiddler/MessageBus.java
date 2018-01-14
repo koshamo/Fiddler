@@ -15,12 +15,9 @@
  */
 package com.github.koshamo.fiddler;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
