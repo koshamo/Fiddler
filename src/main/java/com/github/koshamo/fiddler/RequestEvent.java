@@ -66,11 +66,25 @@ public abstract class RequestEvent<M> extends Event {
 
 	private final M meta;
 	
+	/**
+	 * The constructor needs the message sender and optionally the message target.
+	 * Additionally the meta data object is used to request a set of data
+	 * from all listening modules. Normally only one module would feel guilty
+	 * and provide the data.
+	 * 
+	 * @param source	the sender of this message
+	 * @param target	the target of this message, may be null
+	 * @param meta		the meta data
+	 */
 	public RequestEvent(EventHandler source, EventHandler target, M meta) {
 		super(source, target);
 		this.meta = meta;
 	}
 	
+	/**
+	 * Get the meta data from this event
+	 * @return	the meta data
+	 */
 	public M getMetaInfirmation() {
 		return meta;
 	}
