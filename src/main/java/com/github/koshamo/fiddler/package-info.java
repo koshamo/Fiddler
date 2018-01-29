@@ -1,5 +1,5 @@
 /*
- * Copyright [2017] [Dr. Jochen Raßler]
+ * Copyright [2018] [Dr. Jochen Raßler]
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 /**
- * @author jochen
+ * The main package contains all the classes needed for a standard 
+ * fiddler based application
+ * 
+ * @author Dr. Jochen Raßler
  *
  */
 package com.github.koshamo.fiddler;

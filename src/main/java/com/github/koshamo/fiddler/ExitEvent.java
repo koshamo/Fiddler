@@ -1,5 +1,5 @@
 /*
- * Copyright [2017] [Dr. Jochen Raßler]
+ * Copyright [2018] [Dr. Jochen Raßler]
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,26 @@
 package com.github.koshamo.fiddler;
 
 /**
- * @author jochen
+ * The exit event is a event, that is distributed to all modules registered
+ * to the message bus and calls their shutdown method. This event triggers
+ * a regular application shutdown process and all modules have the ability
+ * to do what they need to do before application exit, e.g. stop threads, 
+ * writing data etc.
+ * 
+ * @author Dr. Jochen Raßler
  *
  */
 public class ExitEvent extends Event {
 
 	/**
-	 * @param source
-	 * @param target
+	 * The constructor of the exit event. Source must be provided, target may be 
+	 * null.
+	 * 
+	 * @param source	the sender of this event
+	 * @param target	the target of this event, may be null
 	 */
 	public ExitEvent(EventHandler source, EventHandler target) {
 		super(source, target);
-		// TODO Auto-generated constructor stub
 	}
 
 }

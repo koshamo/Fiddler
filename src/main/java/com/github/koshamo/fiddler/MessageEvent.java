@@ -16,6 +16,17 @@
 package com.github.koshamo.fiddler;
 
 /**
+ * The message event is a simple event, that can be used to distribute
+ * simple information along the Fiddler based application.
+ * <p>
+ * In some applications it is helpful to distribute simple information 
+ * to all modules. This message event is designed for it.
+ * <p>
+ * Example:
+ * <p>
+ * <code>
+ * messageBus.postEvent(new MessageEvent(this, null, "settings available");<br>
+ * </code>
  * @author jochen
  *
  */
@@ -23,11 +34,24 @@ public abstract class MessageEvent extends Event {
 	
 	private final String message;
 	
+	/**
+	 * The constructor needs the message sender and optionally the message target.
+	 * Additionally a simple String message object is used to distribute
+	 * the message to all listening modules.
+	 * 
+	 * @param source	the sender of this message
+	 * @param target	the target of this message, may be null
+	 * @param message	the message to distribute
+	 */
 	public MessageEvent(EventHandler source, EventHandler target, String message) {
 		super(source, target);
 		this.message = message;
 	}
 
+	/**
+	 * get the message from this event
+	 * @return	the message as String
+	 */
 	public String getMessage() {
 		return message;
 	}
