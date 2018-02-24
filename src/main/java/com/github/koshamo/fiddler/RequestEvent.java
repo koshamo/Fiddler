@@ -28,27 +28,25 @@ package com.github.koshamo.fiddler;
  * create your own sublass extending this RequestEvent and provide a
  * concrete Type for the meta data.
  * <p>
- * Meta data: the meta data is used to describe the content of the data
+ * <b>Meta data:</b> the meta data is used to describe the content of the data
  * requested. In some applications enums may help to define the requested
  * data as unique ID, in other applications using Strings may fit your needs 
  * (e.g. "Battery_Loadd"). You may also define your own class to define
  * complex meta data description, to be able to address the target to manage
  * the data in detail.
  * <p>
- * @see DataEvent
- * <p>
  * Example:
- * <p>
- * <code>
- * class BatteryLoadRequestEvent extends DataEvent<String> {<br>
- * 		BatteryLoadRequestEvent (EventHandler source, EventHandler target, String meta) {<br>
- * 			super(source, target, meta);<br>
- * 		}<br>
- * }<br>
- * <br>
- * messageBus.postEvent(new BatteryLoadRequestEvent(this, null, "getCurrentLoad");<br>
- * </code
- * <p>
+ * <pre>
+ * {@code
+ * class BatteryLoadRequestEvent extends DataEvent<String> {
+ * 		BatteryLoadRequestEvent (EventHandler source, EventHandler target, String meta) {
+ * 			super(source, target, meta);
+ * 		}
+ * }
+ * 
+ * messageBus.postEvent(new BatteryLoadRequestEvent(this, null, "getCurrentLoad");
+ * }
+ * </pre>
  * The module communicating with the hardware would now listen to this event
  * and do, what it needs to do to provide the current battery load.
  * As soon as it has the current battery load available, the module would now
@@ -59,7 +57,9 @@ package com.github.koshamo.fiddler;
  * data, so the requesting module can now check with <code>==</code> or the 
  * equals method.
  *  
- * @author jochen
+ * @see DataEvent
+
+ * @author Dr. Jochen Raßler
  *
  */
 public abstract class RequestEvent<M> extends Event {

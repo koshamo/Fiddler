@@ -23,11 +23,12 @@ package com.github.koshamo.fiddler;
  * to all modules. This message event is designed for it.
  * <p>
  * Example:
- * <p>
- * <code>
- * messageBus.postEvent(new MessageEvent(this, null, "settings available");<br>
- * </code>
- * @author jochen
+ * <pre>
+ * {@code
+ * messageBus.postEvent(new MessageEvent(this, null, "settings available");
+ * }
+ * </pre>
+ * @author Dr. Jochen Raßler
  *
  */
 public abstract class MessageEvent extends Event {

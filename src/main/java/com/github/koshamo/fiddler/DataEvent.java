@@ -21,30 +21,29 @@ package com.github.koshamo.fiddler;
  * <p>
  * This abstract class uses generics to define its valueable usage:
  * <p>
- * Meta data: the meta data is used to describe the content of the data. 
+ * <b>Meta data:</b> the meta data is used to describe the content of the data. 
  * In some applications enums may help to define the delivered data as unique
  * ID, in other applications using Strings may fit your needs 
  * (e.g. "Battery_Loadd"). You may also define your own class to define
  * complex meta data description, to be able to address the target to manage
  * the data in detail.
  * <p>
- * Data: the actual data, which may be of a simple type (you need classes, so
+ * <b>Data:</b> the actual data, which may be of a simple type (you need classes, so
  * use the wrapper types for primitive data), user defined classes or any
  * collection.
  * <p>
  * Example:
- * <p>
- * <code>
- * class BatteryLoadEvent extends DataEvent<String, Integer> {<br>
- * 		BatteryLoadEvent (EventHandler source, EventHandler target,<br>
- * 				String meta, Integer data) {<br>
- * 			super(source, target, meta, data);<br>
- * 		}<br>
- * }<br>
- * <br>
- * messageBus.postEvent(new BatteryLoadEvent(<br>
- * 		this, null, "currentLoad", Integer.valueOf(17));<br>
- * </code>
+ * <pre>
+ * {@code
+ * class BatteryLoadEvent extends DataEvent<String, Integer> {
+ * 		BatteryLoadEvent (EventHandler source, EventHandler target, String meta, Integer data) {
+ * 			super(source, target, meta, data);
+ * 		}
+ * }
+ * 
+ * messageBus.postEvent(new BatteryLoadEvent(this, null, "currentLoad", Integer.valueOf(17));
+ * }
+ * </pre>
  * 
  * @author Dr. Jochen Raßler
  *
