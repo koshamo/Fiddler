@@ -36,9 +36,9 @@ package com.github.koshamo.fiddler;
  * <pre>
  * {@code
  * class BatteryLoadEvent extends DataEvent<String, Integer> {
- * 		BatteryLoadEvent (EventHandler source, EventHandler target, String meta, Integer data) {
- * 			super(source, target, meta, data);
- * 		}
+ * 	BatteryLoadEvent (EventHandler source, EventHandler target, String meta, Integer data) {
+ * 		super(source, target, meta, data);
+ * 	}
  * }
  * 
  * messageBus.postEvent(new BatteryLoadEvent(this, null, "currentLoad", Integer.valueOf(17));

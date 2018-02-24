@@ -29,22 +29,22 @@ package com.github.koshamo.fiddler;
  * <pre>
  * <code>
  * public class StrBoolDataEvent extends {@code DataEvent<String, Boolean>} {
- * 		public StrBoolDataEvent(EventHandler source, EventHandler target, String meta, Boolean data) {
- * 			super(source, target, meta, data);
- * 		}
+ * 	public StrBoolDataEvent(EventHandler source, EventHandler target, String meta, Boolean data) {
+ * 		super(source, target, meta, data);
+ * 	}
  * }
  *
  * public MyClass implements EventHandler {
- * 		{@literal @}Override
- * 		public void handle(Event event) {
- *			if (event instanceof StrBoolDataEvent) {
- * 				StrBoolDataEvent de = (StrBoolDataEvent) event;
- * 				if (de.getMetaInformation().equals("KEY_ONE"))
- * 					doActionOne();
- *				if (de.getMetaInformation().equals("KEY_TWO"))
- *					doActionTwo();
- *			}
- * 		}
+ * 	{@literal @}Override
+ * 	public void handle(Event event) {
+ *		if (event instanceof StrBoolDataEvent) {
+ * 			StrBoolDataEvent de = (StrBoolDataEvent) event;
+ * 			if (de.getMetaInformation().equals("KEY_ONE"))
+ * 				doActionOne();
+ *			if (de.getMetaInformation().equals("KEY_TWO"))
+ *				doActionTwo();
+ *		}
+ * 	}
  * }
  * </code>
  * </pre>
