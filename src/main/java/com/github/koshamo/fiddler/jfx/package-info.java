@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 /**
- * @author jochen
+ * This package contains classes to integrate Fiddler with the Java FX framework
+ * @author Dr. Jochen Raßler
  *
  */
 package com.github.koshamo.fiddler.jfx;
