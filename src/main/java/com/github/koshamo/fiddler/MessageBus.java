@@ -333,10 +333,12 @@ public class MessageBus {
 					}
 				} else {
 					try {
-						Thread.sleep(5);
+						if (!Thread.interrupted())
+							Thread.sleep(5);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						// we are interrupted while waiting.
+						// let's use this, to run this thread again
+						// and sleep afterwards
 					}
 				}
 				removeUnregisteredHandlers();
