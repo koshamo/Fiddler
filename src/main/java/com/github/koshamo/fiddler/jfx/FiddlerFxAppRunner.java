@@ -15,6 +15,8 @@
  */
 package com.github.koshamo.fiddler.jfx;
 
+import java.util.Objects;
+
 import javafx.application.Application;
 
 /**
@@ -38,6 +40,7 @@ public class FiddlerFxAppRunner implements Runnable {
 	 * the main method
 	 */
 	public FiddlerFxAppRunner(Class<? extends FiddlerFxApp> fiddlerFxApp, String[] args) {
+		Objects.requireNonNull(fiddlerFxApp);
 		this.fiddlerFxApp = fiddlerFxApp;
 		this.args = args;
 	}
