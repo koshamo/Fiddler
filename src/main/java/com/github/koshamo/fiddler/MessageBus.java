@@ -315,8 +315,9 @@ public class MessageBus {
 				if (!eventQueue.isEmpty()) {
 					deleteNulls();
 					Event ev = eventQueue.poll();
-					// TODO: why does poll return a null element?
-					// we checked the queue, if any item is there
+					// TODO: why are we here?
+					// we checked the queue with isEmpty(), which should have
+					// returned true
 					if (ev != null) {
 						if (ev instanceof ExitEvent) {
 							shutdown();

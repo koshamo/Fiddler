@@ -24,7 +24,6 @@ import com.github.koshamo.fiddler.MessageBus.ListenerType;
  * @author Dr. Jochen Raßler
  *
  */
-// TODO: can this class be replaced by using a Map?
 final class RegisteredHandler {
 	private final EventHandler handler;
 	private final ListenerType type;
