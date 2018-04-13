@@ -85,7 +85,7 @@ public abstract class RequestEvent<M> extends Event {
 	 * Get the meta data from this event
 	 * @return	the meta data
 	 */
-	public M getMetaInfirmation() {
+	public M getMetaInformation() {
 		return meta;
 	}
 	
